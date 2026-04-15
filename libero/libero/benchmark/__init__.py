@@ -183,7 +183,10 @@ class Benchmark(abc.ABC):
                 self.tasks[i].init_states_file,
             )
 
-        init_states = torch.load(init_states_path)
+        # PyTorch 2.6+ defaults torch.load(..., weights_only=True), but LIBERO
+        # init state files contain pickled numpy arrays / metadata rather than
+        # plain tensor state_dicts, so they must be loaded with weights_only=False.
+        init_states = torch.load(init_states_path, weights_only=False)
         return init_states
     
     def get_task_init_states(self, i):
@@ -239,7 +242,10 @@ class Benchmark(abc.ABC):
         
         # print("====init_states_path=====", init_states_path)
 
-        init_states = torch.load(init_states_path)
+        # PyTorch 2.6+ defaults torch.load(..., weights_only=True), but LIBERO
+        # init state files contain pickled numpy arrays / metadata rather than
+        # plain tensor state_dicts, so they must be loaded with weights_only=False.
+        init_states = torch.load(init_states_path, weights_only=False)
         if "_add_" in self.tasks[i].init_states_file or "_level" in self.tasks[i].init_states_file:
             init_states = init_states.reshape(1, -1)
         return init_states

@@ -204,6 +204,7 @@ class ControlEnv:
         renderer_config=None,
         **kwargs,
     ):
+        bddl_file_name = os.fspath(bddl_file_name)
         if "_view_" in bddl_file_name and "_initstate_" in bddl_file_name:
             bddl_file_name, angle_view_initstate = bddl_file_name.split("_view_")
             bddl_file_name = bddl_file_name + ".bddl"
